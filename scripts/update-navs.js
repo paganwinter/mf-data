@@ -91,7 +91,7 @@ function processNAVs(fromDateStr, toDateStr, dryRun = false) {
     console.log('RANGE:', [fromDate, toDate])
 
     const parsedFile = `nav_history_${fromDate}_${toDate}.json`
-    console.time('  PROCESS NAV '+parsedFile)
+    console.time(`  Processed file in`)
     console.log(i+1, '/', len, 'Processing NAV File:', parsedFile);
 
     let parsedData = JSON.parse(fs.readFileSync(`${AMFI_PARSED_DATA_DIR}/${parsedFile}`, 'utf-8'));
@@ -115,13 +115,13 @@ function processNAVs(fromDateStr, toDateStr, dryRun = false) {
       })
       // if (process.stdout.isTTY) process.stdout.write(`\r  Processed ${i+1} / ${fundsOfInterest.length}`);
     })
-
-    console.log('')
-    console.timeEnd('  PROCESS NAV '+parsedFile)
+    console.timeEnd(`  Processed file in`)
     console.log('-----')
     console.log('')
   }
+  console.timeEnd('Processed NAVs in')
 
+  console.time('Wrote NAVs in')
   Object.entries(fundsMap).forEach(([amfiCode, newFundData], i) => {
     const fundNAVFile = `${NAVS_DATA_DIR}/${amfiCode}.json`
     let fundData
@@ -142,15 +142,15 @@ function processNAVs(fromDateStr, toDateStr, dryRun = false) {
     }
     if (process.stdout.isTTY) process.stdout.write(`\r  Updated ${i + 1} / ${Object.keys(fundsMap).length}`);
   })
-
   console.log('')
-  console.timeEnd('Processed NAVs in')
+  console.timeEnd('Wrote NAVs in')
   console.log('=====')
   console.log('')
 }
 
 
 function updateStats() {
+  console.log('Updating fund status')
   const files = fs.readdirSync(AMFI_PARSED_DATA_DIR).filter(f => f.endsWith('.json'))
   const fundsMap = {}
   for (let i = 0, len = files.length; i < len; i++) {
