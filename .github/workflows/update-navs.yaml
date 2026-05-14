@@ -1,8 +1,8 @@
 name: Update NAVs
 
 on:
-  # schedule:
-  #   - cron: "0 18 * * 1-6" # Mon to Sat at 11:30 pm IST
+  schedule:
+    - cron: "0 18 * * 1-6" # Mon to Sat at 11:30 pm IST
   workflow_dispatch:
     inputs:
       from_date:
