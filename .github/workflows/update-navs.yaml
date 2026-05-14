@@ -82,5 +82,6 @@ jobs:
           else
             TODAY=$(date -u +"%Y-%m-%d")
             echo "message: chore(nav): Update NAVs for ${TODAY} [skip ci]"
-            # git commit -m "chore(nav): Update NAVs for ${TODAY} [skip ci]"
-            # git push
+            git commit -m "chore(nav): Update NAVs for ${TODAY} [skip ci]"
+            git push
+          fi
