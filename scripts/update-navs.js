@@ -81,6 +81,8 @@ function processNAVs(fromDateStr, toDateStr, dryRun = false) {
   const ranges = getMonthRanges(fromDateStr, toDateStr)
   console.log('ranges:', ranges)
 
+  fs.mkdirSync(NAVS_DATA_DIR, { recursive: true })
+
   const fundsMap = {}
 
   console.time('Processed NAVs in')
