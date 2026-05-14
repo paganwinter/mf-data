@@ -1,4 +1,6 @@
-name: update-navs-scheduled
+name: Update NAVs (Scheduled)
+
+run-name: Update NAVs - current month
 
 on:
   schedule:

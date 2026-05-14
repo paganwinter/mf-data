@@ -1,4 +1,6 @@
-name: update-navs-manual
+name: Update NAVs (Manual)
+
+run-name: Update NAVs - ${{ inputs.from_date }} to ${{ inputs.to_date }}
 
 on:
   workflow_dispatch:

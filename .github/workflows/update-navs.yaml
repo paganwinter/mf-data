@@ -1,4 +1,4 @@
-name: update-navs (deprecated)
+name: z-update-navs (deprecated)
 
 on:
   # schedule:
