@@ -205,7 +205,7 @@ function updateStats() {
     categories: filteredFundsCategories,
     categoriesRaw: filteredFundsCategoriesRaw,
     funds: filteredFunds,
-  }, null, 2));
+  }));
 }
 
 
