@@ -17,12 +17,18 @@ function getMonthRanges(startDate, endDate) {
   let current = new Date(`${startDate.split('-').slice(0, 2).join('-')}-01`);
   const ranges = []
   while (current <= end) {
-    const isStartMonth = current.getFullYear() === start.getFullYear() && current.getMonth() === start.getMonth()
-    const isEndMonth = current.getFullYear() === end.getFullYear() && current.getMonth() === end.getMonth()
-
     const currentMonthStr = current.toISOString().split('-').slice(0, 2).join('-')
-    const firstDayOfMonth = isStartMonth ? start.getDate() : 1;
-    const lastDayOfMonth = isEndMonth ? end.getDate() : new Date(current.getFullYear(), current.getMonth() + 1, 0).getDate();
+
+    // to use actual specified start and end days
+    // const isStartMonth = current.getFullYear() === start.getFullYear() && current.getMonth() === start.getMonth()
+    // const isEndMonth = current.getFullYear() === end.getFullYear() && current.getMonth() === end.getMonth()
+    // const firstDayOfMonth = isStartMonth ? start.getDate() : 1;
+    // const lastDayOfMonth = isEndMonth ? end.getDate() : new Date(current.getFullYear(), current.getMonth() + 1, 0).getDate();
+
+    // to use 1st day of start month and last day of end month
+    const firstDayOfMonth = 1;
+    const lastDayOfMonth = new Date(current.getFullYear(), current.getMonth() + 1, 0).getDate();
+
     const monthStart = `${currentMonthStr}-${`${firstDayOfMonth}`.padStart(2, '0')}`
     const monthEnd = `${currentMonthStr}-${`${lastDayOfMonth}`.padStart(2, '0')}`
     ranges.push([monthStart, monthEnd])

@@ -28,6 +28,7 @@ async function downloadNAVs(fromDateStr, toDateStr, dryRun = false) {
     // if (!dryRun) execSync(`curl -o ${AMFI_RAW_DATA_DIR}/${fileName} "${url}"`, { stdio: 'inherit' })
     execSync(`curl -o ${AMFI_RAW_DATA_DIR}/${fileName} "${url}"`, { stdio: 'inherit' })
     console.log('')
+    console.log('')
   })
   console.log('')
   console.timeEnd('Downloaded in')
