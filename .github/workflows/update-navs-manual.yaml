@@ -1,8 +1,6 @@
-name: update-navs (deprecated)
+name: update-navs-manual
 
 on:
-  # schedule:
-  #   - cron: "0 18 * * 1-6" # Mon to Sat at 11:30 pm IST
   workflow_dispatch:
     inputs:
       from_date:
@@ -12,25 +10,30 @@ on:
         description: 'To Date (YYYY-MM-DD)'
         required: false
       dry_run:
-        description: 'Dry Run (true/false)'
+        description: 'Dry Run'
         required: false
-        default: 'false'
+        type: boolean
+        default: false
       steps_download:
-        description: 'Run Download Step (true/false)'
+        description: 'Run Download Step'
         required: false
-        default: 'true'
+        type: boolean
+        default: true
       steps_parse:
-        description: 'Run Parse Step (true/false)'
+        description: 'Run Parse Step'
         required: false
-        default: 'true'
+        type: boolean
+        default: true
       steps_process:
-        description: 'Run Process Step (true/false)'
+        description: 'Run Process Step'
         required: false
-        default: 'true'
+        type: boolean
+        default: true
       commit_changes:
-        description: 'Commit Changes (true/false)'
+        description: 'Commit Changes'
         required: false
-        default: 'false'
+        type: boolean
+        default: false
 
 jobs:
   update-navs:
@@ -81,6 +84,6 @@ jobs:
             echo "No changes to commit"
           else
             TODAY=$(date -u +"%Y-%m-%d")
-            git commit -m "chore(nav): Update NAVs (${{ github.event.inputs.from_date }} - ${{ github.event.inputs.to_date }}) [skip ci]"
+            git commit -m "chore(nav): Update NAVs - manual (${{ github.event.inputs.from_date }} - ${{ github.event.inputs.to_date }}) [skip ci]"
             git push
           fi

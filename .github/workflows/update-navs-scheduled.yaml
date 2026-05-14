@@ -1,0 +1,54 @@
+name: update-navs-scheduled
+
+on:
+  schedule:
+    - cron: "0 18 * * 1-6" # Mon to Sat at 11:30 pm IST
+
+jobs:
+  update-navs:
+    name: Update NAVs from AMFI
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      # - name: Install dependencies
+      #   run: npm ci
+
+      # - name: Update NAVs
+      #   run: |
+      #     node scripts/update-navs.js update --from-date= --to-date= --dry-run=false
+      - name: Download NAVs
+        run: |
+          node scripts/update-navs.js download --from-date= --to-date= --dry-run=false
+      - name: Parse NAVs
+        run: |
+          node scripts/update-navs.js parse --from-date= --to-date= --dry-run=false
+      - name: Process NAVs
+        run: |
+          node scripts/update-navs.js process --from-date= --to-date= --dry-run=false
+
+      - name: Update Stats
+        run: |
+          node scripts/update-navs.js stats
+
+      - name: Push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            TODAY=$(date -u +"%Y-%m-%d")
+            git commit -m "chore(nav): Update NAVs - scheduled ($TODAY) [skip ci]"
+            git push
+          fi
