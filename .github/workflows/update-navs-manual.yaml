@@ -1,6 +1,6 @@
 name: Update NAVs (Manual)
 
-run-name: Update NAVs - ${{ inputs.from_date }} to ${{ inputs.to_date }}
+run-name: Update NAVs - ${{ inputs.from_date || 'this momth' }} to ${{ inputs.to_date || 'this momth' }}
 
 on:
   workflow_dispatch:
