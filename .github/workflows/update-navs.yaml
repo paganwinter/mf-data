@@ -81,7 +81,6 @@ jobs:
             echo "No changes to commit"
           else
             TODAY=$(date -u +"%Y-%m-%d")
-            echo "message: chore(nav): Update NAVs for ${TODAY} [skip ci]"
-            git commit -m "chore(nav): Update NAVs for ${TODAY} [skip ci]"
+            git commit -m "chore(nav): Update NAVs (${{ github.event.inputs.from_date }} - ${{ github.event.inputs.to_date }}) [skip ci]"
             git push
           fi
