@@ -5,7 +5,7 @@ Downloads, parses, and stores NAV daily from [AMFI](https://www.amfiindia.com/ne
 ### Funds List
 
 - All Funds - https://paganwinter.github.io/mf-data/data/funds-all.json
-- Open ended Groath Funds - https://paganwinter.github.io/mf-data/data/funds-filtered.json
+- Open ended Growth Funds - https://paganwinter.github.io/mf-data/data/funds-filtered.json
 
 ### Fund NAVs
 
