@@ -1,3 +1,5 @@
+const { parseArgs } = require('node:util');
+
 const MONTHS_MAP = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 function amfiDateToISO(dateStr) {
   const [dd, mmm, yyyy] = dateStr.split('-')
@@ -8,6 +10,22 @@ function isoDateToAMFI(dateStr) {
   const [yyyy, mm, dd] = dateStr.split('-')
   return `${dd}-${MONTHS_MAP[parseInt(mm, 10) - 1]}-${yyyy}`
 }
+
+function parseArguments(args = process.argv.slice(2)) {
+  function kebabToCamel(str) {
+    return str.replace(/-+(\w)/g, (_, char) => char.toUpperCase());
+  }
+  const parsedArgs = parseArgs({
+    args, allowPositionals: true, strict: false, tokens: false,
+  });
+  const { positionals = [] } = parsedArgs;
+  const command = positionals.shift();
+  const options = Object.fromEntries(Object.entries(parsedArgs.values).map(([key, val]) => [kebabToCamel(key), val]));
+  return {
+    args, parsedArgs, command, options, positionals,
+  };
+}
+
 
 function getMonthRanges(startDate, endDate) {
   const start = new Date(startDate);
@@ -86,7 +104,7 @@ function parseAMFIData(data) {
       currentAMC = line
     } else if (FUND_LINE_REGEX.test(line)) {
       // Fund data
-      let [amfiCode, schemeName, isinGrowth, isinDivReinvestment, nav, repurchasePrice, salePrice, date] = line.split(';')
+      let [schemeCode, schemeName, isinGrowth, isinDivReinvestment, nav, repurchasePrice, salePrice, date] = line.split(';')
 
       date = amfiDateToISO(date)
       nav = +nav
@@ -98,11 +116,11 @@ function parseAMFIData(data) {
       // regular vs direct
       // let growth = !!name.match(/growth/i)
 
-      if (!fundsMap[amfiCode]) {
+      if (!fundsMap[schemeCode]) {
         let fund = {
           info: {
+            schemeCode,
             amc: currentAMC,
-            amfiCode,
             schemeName,
             categoryRaw: currentRawCategory,
             type,
@@ -115,35 +133,44 @@ function parseAMFIData(data) {
           navs: {},
           // navs: [],
         }
-        fundsMap[amfiCode] = fund;
+        fundsMap[schemeCode] = fund;
       }
-      fundsMap[amfiCode].navs[date] = nav;
+      fundsMap[schemeCode].navs[date] = nav;
     } else {
       // console.log('unknown line')
     }
   }
 
-  const funds = Object.values(fundsMap).sort((a, b) => a.info.schemeName.localeCompare(b.info.schemeName))
+  // const funds = Object.values(fundsMap).sort((a, b) => a.schemeName.localeCompare(b.schemeName))
+  const funds = Object.values(fundsMap)
   return {
     funds,
-    categories: Array.from(new Set(funds.map(f => f.info.category))),
-    amcs: Array.from(new Set(funds.map(f => f.info.amc))),
-    types: Array.from(new Set(funds.map(f => f.info.type))),
-    schemes: Array.from(new Set(funds.map(f => f.info.scheme))),
+    categories: Array.from(new Set(funds.map(f => f.category))),
+    amcs: Array.from(new Set(funds.map(f => f.amc))),
+    types: Array.from(new Set(funds.map(f => f.type))),
+    schemes: Array.from(new Set(funds.map(f => f.scheme))),
     categoriesMap,
   }
 }
 
 
 function filterFund(fund) {
-  if (!fund.info.categoryRaw.match(/Open Ended/i)) return false
-  if (fund.info.schemeName.match(/(IDCW|Income Distribution Cum Capital Withdrawal|Dividend)/i)) return false
-  if (fund.info.schemeName.match(/(regular plan)/i)) return false
+  // only open ended funds
+  if (!fund.categoryRaw.match(/Open Ended/i)) return false
+
+  // no dividend funds
+  if (fund.schemeName.match(/(IDCW|Income Distribution Cum Capital Withdrawal|Dividend)/i)) return false
+
+  // no regular plans
+  // (only ~1400 regular funds, so keep for now)
+  // if (fund.schemeName.match(/(regular plan)/i)) return false
+
   return true
   // if (!fund.isinGrowth || !fund.isinDivReinvestment) return false
 }
 
 module.exports = {
+  parseArguments,
   isoDateToAMFI,
   getMonthRanges,
   parseAMFIData,

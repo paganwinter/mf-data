@@ -11,3 +11,23 @@ Downloads, parses, and stores NAV daily from [AMFI](https://www.amfiindia.com/ne
 
 - https://paganwinter.github.io/mf-data/data/navs/{AMFI-code}.json
 
+---
+
+## TODO
+
+### Index NAVs
+
+- https://www.niftyindices.com/reports/historical-data
+- https://www.nseindia.com/all-reports
+  - https://www.nseindia.com/reports-indices-historical-vix
+
+
+### Propsed Structure
+
+```
+/funds/funds-all.json
+/funds/funds-filtered.json
+/funds/nav/{fund-id}.json
+
+/index/{index}.json
+```

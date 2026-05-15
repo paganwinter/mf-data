@@ -1,9 +1,8 @@
 const fs = require('fs');
 const { execSync, exec } = require('child_process')
-const { parseArgs } = require('node:util');
 
 const utils = require('./utils');
-const { isoDateToAMFI, getMonthRanges, parseAMFIData, filterFund } = utils;
+const { parseArguments, isoDateToAMFI, getMonthRanges, parseAMFIData, filterFund } = utils;
 
 
 const AMFI_RAW_DATA_DIR = './amfi-data-raw'
@@ -19,14 +18,19 @@ async function downloadNAVs(fromDateStr, toDateStr, dryRun = false) {
 
   console.time('Downloaded in')
   fs.mkdirSync(AMFI_RAW_DATA_DIR, { recursive: true })
-  ranges.map(([fromDate, toDate]) => {
-    console.log('RANGE:', [fromDate, toDate])
+  ranges.map(([monthStart, monthEnd]) => {
+    console.log('RANGE:', [monthStart, monthEnd])
 
-    const fileName = `nav_history_${fromDate}_${toDate}.txt`
-    const url = `https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?tp=1&frmdt=${isoDateToAMFI(fromDate)}&todt=${isoDateToAMFI(toDate)}`
-    console.log(`Downloading NAVs from ${fromDate} to ${toDate}: ${url}`)
-    // if (!dryRun) execSync(`curl -o ${AMFI_RAW_DATA_DIR}/${fileName} "${url}"`, { stdio: 'inherit' })
-    execSync(`curl -o ${AMFI_RAW_DATA_DIR}/${fileName} "${url}"`, { stdio: 'inherit' })
+    const monthStr = monthStart.split('-').slice(0, 2).join('-')
+    // const rawFileName = `nav_history_${monthStart}_${monthEnd}.txt`
+    const rawFileName = `nav_history_${monthStr}.txt`
+
+    // all (open ended and close ended)
+    // const url = `https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=${isoDateToAMFI(monthStart)}&todt=${isoDateToAMFI(monthEnd)}`
+    // open ended only
+    const url = `https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?tp=1&frmdt=${isoDateToAMFI(monthStart)}&todt=${isoDateToAMFI(monthEnd)}`
+    console.log(`Downloading NAVs from ${monthStart} to ${monthEnd}: ${url}`)
+    execSync(`curl -o ${AMFI_RAW_DATA_DIR}/${rawFileName} "${url}"`, { stdio: 'inherit' })
     console.log('')
     console.log('')
   })
@@ -48,31 +52,55 @@ function parseNAVs(fromDateStr, toDateStr, dryRun = false) {
   console.time('Parsed in')
   fs.mkdirSync(AMFI_PARSED_DATA_DIR, { recursive: true })
   for (let i = 0, len = ranges.length; i < len; i++) {
-    const [fromDate, toDate] = ranges[i]
-    console.log('RANGE:', [fromDate, toDate])
+    const [monthStart, monthEnd] = ranges[i]
+    console.log('RANGE:', [monthStart, monthEnd])
 
-    const fileName = `nav_history_${fromDate}_${toDate}.txt`
-    console.time('  PARSE '+fileName)
-    console.log(i+1, '/', len, 'Parsing file:', fileName)
-    let rawAMFIData = fs.readFileSync(`${AMFI_RAW_DATA_DIR}/${fileName}`, 'utf-8');
+    const monthStr = monthStart.split('-').slice(0, 2).join('-')
+    // const rawFileName = `nav_history_${monthStart}_${monthEnd}.txt`
+    const rawFileName = `nav_history_${monthStr}.txt`
+    const parsedFileName = `nav_history_${monthStr}.json`
+
+    console.log(i + 1, '/', len, 'Parsing file:', rawFileName)
+    console.time('  Parsed file in')
+
+    let rawAMFIData = fs.readFileSync(`${AMFI_RAW_DATA_DIR}/${rawFileName}`, 'utf-8');
     let parsedData = parseAMFIData(rawAMFIData);
-    if (!parsedData) {
-      console.log('  !! Failed to parse file')
+    if (!parsedData?.funds?.length) {
+      console.log(parsedData)
+      console.log('  !! Failed to parse file', rawFileName)
       // throw new Error('Failed to parse file')
       return
     }
     if (!dryRun) {
-      fs.writeFileSync(`${AMFI_PARSED_DATA_DIR}/nav_history_${fromDate}_${toDate}.json`, JSON.stringify(parsedData))
+      fs.writeFileSync(`${AMFI_PARSED_DATA_DIR}/${parsedFileName}`, JSON.stringify({
+        month: monthStr,
+        fundsCount: parsedData.funds.length,
+        funds: parsedData.funds,
+      }))
     }
-    console.timeEnd('  PARSE '+fileName)
+
+    console.timeEnd('  Parsed file in')
     console.log('')
   }
   console.log('')
   console.timeEnd('Parsed in')
+
   console.log('=====')
   console.log('')
 }
 
+
+
+function getNavStatsBasic(navsMap) {
+  // sort from latest to oldest
+  const navsSorted = Object.entries(navsMap).map(([date, nav]) => ({ date, nav })).sort((a, b) => b.date.localeCompare(a.date))
+  const navCount = navsSorted.length
+  const navOldestDate = navsSorted[navsSorted.length - 1].date
+  const navLatestDate = navsSorted[0].date
+  const navOldest = navsSorted[navsSorted.length - 1].nav
+  const navLatest = navsSorted[0].nav
+  return { navsSorted, navCount, navOldestDate, navLatestDate, navOldest, navLatest }
+}
 
 
 function processNAVs(fromDateStr, toDateStr, dryRun = false) {
@@ -84,147 +112,173 @@ function processNAVs(fromDateStr, toDateStr, dryRun = false) {
 
   fs.mkdirSync(NAVS_DATA_DIR, { recursive: true })
 
+  console.time('Processed NAVs in')
+
+
   const fundsMap = {}
 
-  console.time('Processed NAVs in')
+  console.time('Processed NAV files in')
   for (let i = 0, len = ranges.length; i < len; i++) {
-    const [fromDate, toDate] = ranges[i]
-    console.log('RANGE:', [fromDate, toDate])
+    const [monthStart, monthEnd] = ranges[i]
+    console.log('RANGE:', [monthStart, monthEnd])
 
-    const parsedFile = `nav_history_${fromDate}_${toDate}.json`
+    const monthStr = monthStart.split('-').slice(0, 2).join('-')
+    const parsedFileName = `nav_history_${monthStr}.json`
+
+    console.log(i + 1, '/', len, 'Processing NAV File:', parsedFileName);
     console.time(`  Processed file in`)
-    console.log(i+1, '/', len, 'Processing NAV File:', parsedFile);
 
-    let parsedData = JSON.parse(fs.readFileSync(`${AMFI_PARSED_DATA_DIR}/${parsedFile}`, 'utf-8'));
-    const fundsOfInterest = parsedData.funds.filter(filterFund)
+    let parsedData = JSON.parse(fs.readFileSync(`${AMFI_PARSED_DATA_DIR}/${parsedFileName}`, 'utf-8'));
+    const fundsOfInterest = parsedData.funds.filter(fund => (filterFund(fund.info)))
     console.log('  Funds:', fundsOfInterest.length, '/', parsedData.funds?.length)
 
     fundsOfInterest.forEach((fund, i) => {
-      if (!fundsMap[fund.info.amfiCode]) {
-        fundsMap[fund.info.amfiCode] = {
+      const fundInfo = fund.info
+      if (!fundsMap[fundInfo.schemeCode]) {
+        fundsMap[fundInfo.schemeCode] = {
           info: {
-            ...fund.info,
+            ...fundInfo,
             navCount: 0,
-            navStartDate: '',
-            navEndDate: '',
+            navOldestDate: '',
+            navLatestDate: '',
+            navOldest: 0,
+            navLatest: 0,
           },
           navs: {},
         }
       }
-      Object.entries(fund.navs).forEach(([date, nav]) => {
-        fundsMap[fund.info.amfiCode].navs[date] = nav
-      })
+      fundsMap[fundInfo.schemeCode].navs = { ...fundsMap[fundInfo.schemeCode].navs, ...fund.navs }
       // if (process.stdout.isTTY) process.stdout.write(`\r  Processed ${i+1} / ${fundsOfInterest.length}`);
     })
+
     console.timeEnd(`  Processed file in`)
     console.log('-----')
     console.log('')
   }
-  console.timeEnd('Processed NAVs in')
+  console.timeEnd('Processed NAV files in')
+  console.log('Funds: ', Object.keys(fundsMap).length)
 
-  console.time('Wrote NAVs in')
-  Object.entries(fundsMap).forEach(([amfiCode, newFundData], i) => {
-    const fundNAVFile = `${NAVS_DATA_DIR}/${amfiCode}.json`
+
+
+  console.log('Updating fund NAV files')
+  console.time('  Updated fund NAV files in')
+  Object.entries(fundsMap).forEach(([schemeCode, fund], i) => {
+    const fundFile = `${NAVS_DATA_DIR}/${schemeCode}.json`
+
     let fundData
-    if (!fs.existsSync(fundNAVFile)) {
-      fundData = { info: newFundData.info, navs: {} }
+    if (!fs.existsSync(fundFile)) {
+      fundData = { ...fund }
     } else {
-      // fundData = require(`../${fundNAVFile}`)
-      fundData = JSON.parse(fs.readFileSync(fundNAVFile, 'utf-8'))
+      // fundData = require(`../${fundFile}`)
+      fundData = JSON.parse(fs.readFileSync(fundFile, 'utf-8'))
+      fundData.navs = { ...fundData.navs, ...fund.navs }
     }
-    fundData.navs = { ...fundData.navs, ...newFundData.navs }
-    fundData.navs = Object.fromEntries(Object.entries(fundData.navs).sort(([a], [b]) => b.localeCompare(a)))
-    fundData.info.navCount = Object.keys(fundData.navs).length
-    const dates = Object.keys(fundData.navs)
-    fundData.info.navStartDate = dates[dates.length - 1]
-    fundData.info.navEndDate = dates[0]
+
+    const { navsSorted, navCount, navOldestDate, navLatestDate, navOldest, navLatest } = getNavStatsBasic(fundData.navs)
+
+    fundData.navs = Object.fromEntries(navsSorted.map(({ date, nav }) => [date, nav]))
+    fundData.info = {
+      ...fundData.info,
+      navCount,
+      navOldestDate,
+      navLatestDate,
+      navOldest,
+      navLatest,
+    }
     if (!dryRun) {
-      fs.writeFileSync(fundNAVFile, JSON.stringify(fundData))
+      fs.writeFileSync(fundFile, JSON.stringify(fundData))
     }
     if (process.stdout.isTTY) process.stdout.write(`\r  Updated ${i + 1} / ${Object.keys(fundsMap).length}`);
   })
   console.log('')
-  console.timeEnd('Wrote NAVs in')
+  console.timeEnd('  Updated fund NAV files in')
+
+  console.timeEnd('Processed NAVs in')
+
   console.log('=====')
   console.log('')
 }
 
 
+
+
+
 function updateStats() {
-  console.log('Updating fund status')
-  const files = fs.readdirSync(AMFI_PARSED_DATA_DIR).filter(f => f.endsWith('.json'))
-  const fundsMap = {}
-  for (let i = 0, len = files.length; i < len; i++) {
-    const file = files[i]
+  console.log('Updating fund stats')
+  const historyFiles = fs.readdirSync(AMFI_PARSED_DATA_DIR).filter(f => f.endsWith('.json'))
+  console.log('NAV History files:', historyFiles.length)
+
+  console.time('Loaded funds info in')
+  let fundsMap = {}
+  for (let i = 0, len = historyFiles.length; i < len; i++) {
+    const file = historyFiles[i]
     const data = JSON.parse(fs.readFileSync(`${AMFI_PARSED_DATA_DIR}/${file}`, 'utf-8'))
-    console.log('Parsing file:', file, '=>', data.funds.length, 'funds')
+    console.log(i + 1, '/', historyFiles.length, `loaded ${file}`, data.funds.length, 'funds')
+
     data.funds.forEach(fund => {
-      if (!fundsMap[fund.info.amfiCode]) {
-        fundsMap[fund.info.amfiCode] = fund
+      const fundInfo = fund.info
+      const { schemeCode } = fundInfo
+      const { navCount, navOldestDate, navLatestDate, navOldest, navLatest } = getNavStatsBasic(fund.navs)
+      if (!fundsMap[schemeCode]) {
+        fundsMap[schemeCode] = {
+          ...fundInfo,
+          navCount,
+          navOldestDate,
+          navLatestDate,
+          navOldest,
+          navLatest,
+        }
+      } else {
+        // fundsMap[schemeCode].navs = { ...fundsMap[schemeCode].navs, ...fund.navs }
+        const existingFundInfo = fundsMap[schemeCode]
+        fundsMap[schemeCode] = {
+          ...existingFundInfo,
+          navCount: existingFundInfo.navCount + navCount,
+          navOldestDate: (new Date(navOldestDate) < new Date(existingFundInfo.navOldestDate)) ? navOldestDate : existingFundInfo.navOldestDate,
+          navLatestDate: (new Date(navLatestDate) > new Date(existingFundInfo.navLatestDate)) ? navLatestDate : existingFundInfo.navLatestDate,
+          navOldest: (navOldest < existingFundInfo.navOldest) ? navOldest : existingFundInfo.navOldest,
+          navLatest: (navLatest > existingFundInfo.navLatest) ? navLatest : existingFundInfo.navLatest,
+        }
       }
     })
   }
+  // for loop
+  // console.log(fundsMap)
+  console.timeEnd('Loaded funds info in')
 
-  // all funds
-  const allFunds = Object.values(fundsMap).map((fund, i) => {
-    // if (process.stdout.isTTY) process.stdout.write(`\r${i+1} / ${Object.keys(fundsMap).length}`)
-    if (i % 1000 === 0) console.log(`Read ${i} / ${Object.keys(fundsMap).length}`)
 
-    if (fs.existsSync(`${NAVS_DATA_DIR}/${fund.info.amfiCode}.json`)) {
-      const fundData = JSON.parse(fs.readFileSync(`${NAVS_DATA_DIR}/${fund.info.amfiCode}.json`, 'utf-8'))
-      return { info: fundData.info }
-    }
-    return {
-      info: {
-        ...fund.info,
-        // navCount: null,
-        // navStartDate: null,
-        // navEndDate: null,
-      }
-    }
-  })
-  let categoriesRaw = Array.from(new Set(allFunds.map(f => f.info.categoryRaw))).sort()
-  let categories = Array.from(new Set(allFunds.map(f => f.info.category))).sort()
-  let amcs = Array.from(new Set(allFunds.map(f => f.info.amc))).sort()
+  console.log('Updating funds list')
+  console.time('Updated funds list in')
+  const allFunds = Object.values(fundsMap)
   fs.writeFileSync('./data/funds-all.json', JSON.stringify({
     fundsCount: allFunds.length,
-    amcs,
-    categories,
-    categoriesRaw,
+    amcs: Array.from(new Set(allFunds.map(f => f.amc))).sort(),
+    categories: Array.from(new Set(allFunds.map(f => f.category))).sort(),
+    categoriesRaw: Array.from(new Set(allFunds.map(f => f.categoryRaw))).sort(),
     funds: allFunds,
   }));
+  let allFundsCsv = Object.keys(allFunds[0]).join(',') + '\n'
+  allFundsCsv += allFunds.map(fund => { return Object.values(fund).map(i => `"${i}"`).join(',') }).join('\n')
+  fs.writeFileSync('./data/funds-all.csv', allFundsCsv)
 
 
   // filtered funds
-  const filteredFunds = allFunds.filter(filterFund)
-  const filteredFundsCategoriesRaw = Array.from(new Set(filteredFunds.map(f => f.info.categoryRaw))).sort()
-  const filteredFundsCategories = Array.from(new Set(filteredFunds.map(f => f.info.category))).sort()
-  const filteredFundsAmcs = Array.from(new Set(filteredFunds.map(f => f.info.amc))).sort()
+  const filteredFunds = allFunds.filter(fund => filterFund(fund))
   fs.writeFileSync('./data/funds-filtered.json', JSON.stringify({
     fundsCount: filteredFunds.length,
-    amcs: filteredFundsAmcs,
-    categories: filteredFundsCategories,
-    categoriesRaw: filteredFundsCategoriesRaw,
+    amcs: Array.from(new Set(filteredFunds.map(f => f.amc))).sort(),
+    categories: Array.from(new Set(filteredFunds.map(f => f.category))).sort(),
+    categoriesRaw: Array.from(new Set(filteredFunds.map(f => f.categoryRaw))).sort(),
     funds: filteredFunds,
   }));
+  let filteredFundsCsv = Object.keys(filteredFunds[0]).join(',') + '\n'
+  filteredFundsCsv += filteredFunds.map(fund => { return Object.values(fund).map(i => `"${i}"`).join(',') }).join('\n')
+  fs.writeFileSync('./data/funds-filtered.csv', filteredFundsCsv)
+  console.timeEnd('Updated funds list in')
 }
 
 
 
-function parseArguments(args = process.argv.slice(2)) {
-  function kebabToCamel(str) {
-    return str.replace(/-+(\w)/g, (_, char) => char.toUpperCase());
-  }
-  const parsedArgs = parseArgs({
-    args, allowPositionals: true, strict: false, tokens: false,
-  });
-  const { positionals = [] } = parsedArgs;
-  const command = positionals.shift();
-  const options = Object.fromEntries(Object.entries(parsedArgs.values).map(([key, val]) => [kebabToCamel(key), val]));
-  return {
-    args, parsedArgs, command, options, positionals,
-  };
-}
 
 
 async function main() {
@@ -259,17 +313,6 @@ async function main() {
   console.log('')
 
   switch(command) {
-    case 'stats': {
-      updateStats();
-      break;
-    }
-    case 'update': {
-      await downloadNAVs(fromDate, toDate, dryRun)
-      parseNAVs(fromDate, toDate, dryRun)
-      // processNAVsV1(fromDate, toDate, dryRun)
-      processNAVs(fromDate, toDate, dryRun);
-      break;
-    }
     case 'download': {
       await downloadNAVs(fromDate, toDate, dryRun)
       break;
@@ -279,6 +322,17 @@ async function main() {
       break;
     }
     case 'process': {
+      processNAVs(fromDate, toDate, dryRun);
+      break;
+    }
+    case 'stats': {
+      updateStats();
+      break;
+    }
+    case 'update': {
+      await downloadNAVs(fromDate, toDate, dryRun)
+      parseNAVs(fromDate, toDate, dryRun)
+      // processNAVsV1(fromDate, toDate, dryRun)
       processNAVs(fromDate, toDate, dryRun);
       break;
     }
