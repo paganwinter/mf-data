@@ -364,6 +364,14 @@ async function main() {
       await downloadAndParse(fromDate, toDate, dryRun)
       break;
     }
+    case 'process-navs': {
+      processNAVs(fromDate, toDate, dryRun);
+      break;
+    }
+    case 'stats': {
+      updateStats();
+      break;
+    }
     // case 'download': {
     //   await downloadNAVs(fromDate, toDate, dryRun)
     //   break;
@@ -372,21 +380,13 @@ async function main() {
     //   parseNAVs(fromDate, toDate, dryRun)
     //   break;
     // }
-    case 'process': {
-      processNAVs(fromDate, toDate, dryRun);
-      break;
-    }
-    case 'stats': {
-      updateStats();
-      break;
-    }
-    case 'update': {
-      await downloadNAVs(fromDate, toDate, dryRun)
-      parseNAVs(fromDate, toDate, dryRun)
-      // processNAVsV1(fromDate, toDate, dryRun)
-      processNAVs(fromDate, toDate, dryRun);
-      break;
-    }
+    // case 'update': {
+    //   await downloadNAVs(fromDate, toDate, dryRun)
+    //   parseNAVs(fromDate, toDate, dryRun)
+    //   // processNAVsV1(fromDate, toDate, dryRun)
+    //   processNAVs(fromDate, toDate, dryRun);
+    //   break;
+    // }
     default: {
       console.log(`Invalid command ${command}. Use one of: download, parse, process, update`)
       process.exit(1)

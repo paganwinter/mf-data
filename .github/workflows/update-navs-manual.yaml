@@ -1,6 +1,6 @@
 name: Update NAVs (Manual)
 
-run-name: Update NAVs (Manual) - (${{ github.event.inputs.from_date || 'month start' }} - ${{ github.event.inputs.to_date || 'month end' }})
+run-name: Update NAVs - manual - (${{ github.event.inputs.from_date || 'month start' }} - ${{ github.event.inputs.to_date || 'month end' }})
 
 on:
   workflow_dispatch:
@@ -21,8 +21,8 @@ on:
         required: false
         type: boolean
         default: true
-      steps_process:
-        description: 'Run Process Step'
+      steps_process_navs:
+        description: 'Run Process NAVs Step'
         required: false
         type: boolean
         default: true
@@ -60,15 +60,11 @@ jobs:
         if: ${{ github.event.inputs.steps_download_parse == 'true' }}
         run: |
           node scripts/update-navs.js download-parse --from-date=${{ github.event.inputs.from_date }} --to-date=${{ github.event.inputs.to_date }} --dry-run=${{ github.event.inputs.dry_run }}
-      # - name: Download NAVs
-      #   if: ${{ github.event.inputs.steps_download == 'true' }}
-      #   run: |
-      #     node scripts/update-navs.js download --from-date=${{ github.event.inputs.from_date }} --to-date=${{ github.event.inputs.to_date }} --dry-run=${{ github.event.inputs.dry_run }}
 
       - name: Process NAVs
-        if: ${{ github.event.inputs.steps_process == 'true' }}
+        if: ${{ github.event.inputs.steps_process_navs == 'true' }}
         run: |
-          node scripts/update-navs.js process --from-date=${{ github.event.inputs.from_date }} --to-date=${{ github.event.inputs.to_date }} --dry-run=${{ github.event.inputs.dry_run }}
+          node scripts/update-navs.js process-navs --from-date=${{ github.event.inputs.from_date }} --to-date=${{ github.event.inputs.to_date }} --dry-run=${{ github.event.inputs.dry_run }}
 
       - name: Update Stats
         if: ${{ github.event.inputs.steps_update_stats == 'true' }}
@@ -85,6 +81,6 @@ jobs:
             echo "No changes to commit"
           else
             TODAY=$(date -u +"%Y-%m-%d")
-            git commit -m "chore(nav): Update NAVs (manual) (${{ github.event.inputs.from_date || 'month start' }} - ${{ github.event.inputs.to_date || 'month end' }}) [skip ci]"
+            git commit -m "chore(nav): Update NAVs - manual - (${{ github.event.inputs.from_date || 'month start' }} - ${{ github.event.inputs.to_date || 'month end' }}) [skip ci]"
             git push
           fi
