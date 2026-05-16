@@ -155,10 +155,8 @@ function processNAVs(fromDateStr, toDateStr, dryRun = false) {
         fs.writeFileSync(fundFile, JSON.stringify(fundData))
       }
       // if (process.stdout.isTTY) process.stdout.write(`\r- Updated: ${i + 1} / ${Object.keys(fundsMap).length}`);
-      if (process.stdout.isTTY) {
-        if (i % 100 === 0) {
-          console.log(`\r- Updated: ${i} / ${Object.keys(fundsMap).length} funds`);
-        }
+      if (i % 100 === 0) {
+        console.log(`\r- Updated: ${i} / ${Object.keys(fundsMap).length} funds`);
       }
     })
     console.log('')
