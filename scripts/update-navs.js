@@ -7,62 +7,32 @@ const { parseArguments, isoDateToAMFI, getMonthRanges, parseAMFIData, filterFund
 
 const AMFI_RAW_DATA_DIR = './amfi-data-raw'
 const AMFI_PARSED_DATA_DIR = './data/amfi-data-parsed'
-const NAVS_DATA_DIR = './data/navs'
+const NAVS_DATA_DIR = './data/navs-test'
 
-async function downloadNAVs(fromDateStr, toDateStr, dryRun = false) {
-  console.log('')
-  console.log('DOWNLOADING...')
 
-  const ranges = getMonthRanges(fromDateStr, toDateStr)
-  console.log('ranges:', ranges)
+async function downloadAndParse(fromDateStr, toDateStr, dryRun = false) {
+  const monthRanges = getMonthRanges(fromDateStr, toDateStr)
+  console.log('monthRanges:', monthRanges)
 
-  console.time('Downloaded in')
-  fs.mkdirSync(AMFI_RAW_DATA_DIR, { recursive: true })
-  ranges.map(([monthStart, monthEnd]) => {
-    console.log('RANGE:', [monthStart, monthEnd])
-
+  monthRanges.forEach(([monthStart, monthEnd], i) => {
     const monthStr = monthStart.split('-').slice(0, 2).join('-')
-    // const rawFileName = `nav_history_${monthStart}_${monthEnd}.txt`
     const rawFileName = `nav_history_${monthStr}.txt`
+    const parsedFileName = `nav_history_${monthStr}.json`
+    console.log(i + 1, '/', monthRanges.length, `Month: ${monthStr} [${monthStart} - ${monthEnd}]`)
 
+
+    // DOWNLOAD
     // all (open ended and close ended)
     // const url = `https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=${isoDateToAMFI(monthStart)}&todt=${isoDateToAMFI(monthEnd)}`
     // open ended only
     const url = `https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?tp=1&frmdt=${isoDateToAMFI(monthStart)}&todt=${isoDateToAMFI(monthEnd)}`
-    console.log(`Downloading NAVs from ${monthStart} to ${monthEnd}: ${url}`)
+    console.log(`  Downloading: ${url}`)
     execSync(`curl -o ${AMFI_RAW_DATA_DIR}/${rawFileName} "${url}"`, { stdio: 'inherit' })
     console.log('')
-    console.log('')
-  })
-  console.log('')
-  console.timeEnd('Downloaded in')
-  console.log('=====')
-  console.log('')
-}
 
 
-
-function parseNAVs(fromDateStr, toDateStr, dryRun = false) {
-  console.log('')
-  console.log('PARSING...')
-
-  const ranges = getMonthRanges(fromDateStr, toDateStr)
-  console.log('ranges:', ranges)
-
-  console.time('Parsed in')
-  fs.mkdirSync(AMFI_PARSED_DATA_DIR, { recursive: true })
-  for (let i = 0, len = ranges.length; i < len; i++) {
-    const [monthStart, monthEnd] = ranges[i]
-    console.log('RANGE:', [monthStart, monthEnd])
-
-    const monthStr = monthStart.split('-').slice(0, 2).join('-')
-    // const rawFileName = `nav_history_${monthStart}_${monthEnd}.txt`
-    const rawFileName = `nav_history_${monthStr}.txt`
-    const parsedFileName = `nav_history_${monthStr}.json`
-
-    console.log(i + 1, '/', len, 'Parsing file:', rawFileName)
-    console.time('  Parsed file in')
-
+    // PARSE
+    console.log(`  Parsing: ${rawFileName} => ${parsedFileName}`)
     let rawAMFIData = fs.readFileSync(`${AMFI_RAW_DATA_DIR}/${rawFileName}`, 'utf-8');
     let parsedData = parseAMFIData(rawAMFIData);
     if (!parsedData?.funds?.length) {
@@ -79,15 +49,88 @@ function parseNAVs(fromDateStr, toDateStr, dryRun = false) {
       }))
     }
 
-    console.timeEnd('  Parsed file in')
     console.log('')
-  }
-  console.log('')
-  console.timeEnd('Parsed in')
-
-  console.log('=====')
-  console.log('')
+    console.log('-----')
+    console.log('')
+  })
 }
+
+// async function downloadNAVs(fromDateStr, toDateStr, dryRun = false) {
+//   console.log('')
+//   console.log('DOWNLOADING...')
+
+//   const ranges = getMonthRanges(fromDateStr, toDateStr)
+//   console.log('ranges:', ranges)
+
+//   console.time('Downloaded in')
+//   fs.mkdirSync(AMFI_RAW_DATA_DIR, { recursive: true })
+//   ranges.map(([monthStart, monthEnd]) => {
+//     console.log('RANGE:', [monthStart, monthEnd])
+
+//     const monthStr = monthStart.split('-').slice(0, 2).join('-')
+//     // const rawFileName = `nav_history_${monthStart}_${monthEnd}.txt`
+//     const rawFileName = `nav_history_${monthStr}.txt`
+
+//     // all (open ended and close ended)
+//     // const url = `https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=${isoDateToAMFI(monthStart)}&todt=${isoDateToAMFI(monthEnd)}`
+//     // open ended only
+//     const url = `https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?tp=1&frmdt=${isoDateToAMFI(monthStart)}&todt=${isoDateToAMFI(monthEnd)}`
+//     console.log(`Downloading NAVs from ${monthStart} to ${monthEnd}: ${url}`)
+//     execSync(`curl -o ${AMFI_RAW_DATA_DIR}/${rawFileName} "${url}"`, { stdio: 'inherit' })
+//     console.log('')
+//     console.log('')
+//   })
+//   console.log('')
+//   console.timeEnd('Downloaded in')
+//   console.log('=====')
+//   console.log('')
+// }
+// function parseNAVs(fromDateStr, toDateStr, dryRun = false) {
+//   console.log('')
+//   console.log('PARSING...')
+
+//   const ranges = getMonthRanges(fromDateStr, toDateStr)
+//   console.log('ranges:', ranges)
+
+//   console.time('Parsed in')
+//   fs.mkdirSync(AMFI_PARSED_DATA_DIR, { recursive: true })
+//   for (let i = 0, len = ranges.length; i < len; i++) {
+//     const [monthStart, monthEnd] = ranges[i]
+//     console.log('RANGE:', [monthStart, monthEnd])
+
+//     const monthStr = monthStart.split('-').slice(0, 2).join('-')
+//     // const rawFileName = `nav_history_${monthStart}_${monthEnd}.txt`
+//     const rawFileName = `nav_history_${monthStr}.txt`
+//     const parsedFileName = `nav_history_${monthStr}.json`
+
+//     console.log(i + 1, '/', len, 'Parsing file:', rawFileName)
+//     console.time('  Parsed file in')
+
+//     let rawAMFIData = fs.readFileSync(`${AMFI_RAW_DATA_DIR}/${rawFileName}`, 'utf-8');
+//     let parsedData = parseAMFIData(rawAMFIData);
+//     if (!parsedData?.funds?.length) {
+//       console.log(parsedData)
+//       console.log('  !! Failed to parse file', rawFileName)
+//       // throw new Error('Failed to parse file')
+//       return
+//     }
+//     if (!dryRun) {
+//       fs.writeFileSync(`${AMFI_PARSED_DATA_DIR}/${parsedFileName}`, JSON.stringify({
+//         month: monthStr,
+//         fundsCount: parsedData.funds.length,
+//         funds: parsedData.funds,
+//       }))
+//     }
+
+//     console.timeEnd('  Parsed file in')
+//     console.log('')
+//   }
+//   console.log('')
+//   console.timeEnd('Parsed in')
+
+//   console.log('=====')
+//   console.log('')
+// }
 
 
 
@@ -312,15 +355,20 @@ async function main() {
   console.log({command, fromDate, toDate, dryRun})
   console.log('')
 
+
   switch(command) {
-    case 'download': {
-      await downloadNAVs(fromDate, toDate, dryRun)
+    case 'download-parse': {
+      await downloadAndParse(fromDate, toDate, dryRun)
       break;
     }
-    case 'parse': {
-      parseNAVs(fromDate, toDate, dryRun)
-      break;
-    }
+    // case 'download': {
+    //   await downloadNAVs(fromDate, toDate, dryRun)
+    //   break;
+    // }
+    // case 'parse': {
+    //   parseNAVs(fromDate, toDate, dryRun)
+    //   break;
+    // }
     case 'process': {
       processNAVs(fromDate, toDate, dryRun);
       break;

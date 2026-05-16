@@ -1,6 +1,6 @@
 name: Update NAVs (Scheduled)
 
-# run-name: Update NAVs - current month
+run-name: Update NAVs (Scheduled)
 
 on:
   schedule:
@@ -25,18 +25,15 @@ jobs:
       # - name: Install dependencies
       #   run: npm ci
 
-      # - name: Update NAVs
+      - name: Download and Parse NAVs
+        run: |
+          node scripts/update-navs.js download-parse --from-date= --to-date= --dry-run=false
+      # - name: Download NAVs
       #   run: |
-      #     node scripts/update-navs.js update --from-date= --to-date= --dry-run=false
-      - name: Download NAVs
-        run: |
-          node scripts/update-navs.js download --from-date= --to-date= --dry-run=false
-      - name: Parse NAVs
-        run: |
-          node scripts/update-navs.js parse --from-date= --to-date= --dry-run=false
-      - name: Process NAVs
-        run: |
-          node scripts/update-navs.js process --from-date= --to-date= --dry-run=false
+      #     node scripts/update-navs.js download --from-date= --to-date= --dry-run=false
+      # - name: Process NAVs
+      #   run: |
+      #     node scripts/update-navs.js process --from-date= --to-date= --dry-run=false
 
       - name: Update Stats
         run: |
