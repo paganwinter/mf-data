@@ -1,5 +1,7 @@
 name: Test Workflow
 
+run-name: Update NAVs (Manual) - (${{ github.event.inputs.from_date || 'month start' }} - ${{ github.event.inputs.to_date || 'month end' }})
+
 on:
   workflow_dispatch:
     inputs:

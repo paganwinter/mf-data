@@ -14,6 +14,9 @@ async function downloadAndParse(fromDateStr, toDateStr, dryRun = false) {
   const monthRanges = getMonthRanges(fromDateStr, toDateStr)
   console.log('monthRanges:', monthRanges)
 
+  fs.mkdirSync(AMFI_RAW_DATA_DIR, { recursive: true })
+  fs.mkdirSync(AMFI_PARSED_DATA_DIR, { recursive: true })
+
   monthRanges.forEach(([monthStart, monthEnd], i) => {
     const monthStr = monthStart.split('-').slice(0, 2).join('-')
     const rawFileName = `nav_history_${monthStr}.txt`
