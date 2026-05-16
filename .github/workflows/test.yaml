@@ -31,11 +31,11 @@ on:
         required: false
         type: boolean
         default: true
-      commit_changes:
-        description: 'Commit Changes'
-        required: false
-        type: boolean
-        default: false
+      # commit_changes:
+      #   description: 'Commit Changes'
+      #   required: false
+      #   type: boolean
+      #   default: false
 
 jobs:
   update-navs:
@@ -71,16 +71,16 @@ jobs:
         run: |
           node scripts/update-navs.js stats
 
-      - name: Push changes
-        if: ${{ github.event.inputs.commit_changes == 'true' }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            TODAY=$(date -u +"%Y-%m-%d")
-            git commit -m "chore(nav): Update NAVs (manual) (${{ github.event.inputs.from_date || 'month start' }} - ${{ github.event.inputs.to_date || 'month end' }}) [skip ci]"
-            git push
-          fi
+      # - name: Push changes
+      #   if: ${{ github.event.inputs.commit_changes == 'true' }}
+      #   run: |
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "github-actions[bot]@users.noreply.github.com"
+      #     git add data/
+      #     if git diff --cached --quiet; then
+      #       echo "No changes to commit"
+      #     else
+      #       TODAY=$(date -u +"%Y-%m-%d")
+      #       git commit -m "chore(nav): Update NAVs (manual) (${{ github.event.inputs.from_date || 'month start' }} - ${{ github.event.inputs.to_date || 'month end' }}) [skip ci]"
+      #       git push
+      #     fi
