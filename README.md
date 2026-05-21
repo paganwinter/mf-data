@@ -1,18 +1,29 @@
 # Mutual Fund Data
 
-Downloads, parses, and stores NAV daily from [AMFI](https://www.amfiindia.com/net-asset-value/nav-download).
+Daat for Indian Mutual Funds.
 
 ### Available Data
 
 #### Mutual Funds
+
 - Funds list (All) - https://paganwinter.github.io/mf-data/data/funds-all.json
 - Funds list (Open-ended, Growth) - https://paganwinter.github.io/mf-data/data/funds-filtered.json
 - Fund NAV History - https://paganwinter.github.io/mf-data/data/navs/{AMFI-code}.json
 
+**Sources**
+- https://www.amfiindia.com/net-asset-value/nav-download
+
+
 #### Indices
+
 - List of Indices (TRI) - https://paganwinter.github.io/mf-data/data/indices.json
 - Indices History (TRI) - https://paganwinter.github.io/mf-data/data/indices/{index-id}.json
 
+**Sources**
+- https://www.niftyindices.com/reports/historical-data
+
+
+---
 
 ## References
 
