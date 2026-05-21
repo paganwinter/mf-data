@@ -15,6 +15,7 @@ if (process.env.USE_PROXY === 'true') {
 
 const NIFTY_INDICES_URL = 'https://www.niftyindices.com/Backpage.aspx';
 const INDICES_DIR = 'data/indices';
+const INDICES_FILE = 'data/indices.json';
 
 function normaliseIndexName(name) {
   return name.replace(/[^a-zA-Z0-9]+/g, '_').trim().toUpperCase()
@@ -57,13 +58,15 @@ async function updateIndicesList() {
     })
   }))
   console.log(indices)
-  fs.writeFileSync('data/indices.json', JSON.stringify(indices, null, 2));
+  fs.writeFileSync(INDICES_FILE, JSON.stringify(indices, null, 2));
 }
+
+
 
 async function updateIndices(fromDateStr, toDateStr, dryRun = false) {
   console.log(fromDateStr, toDateStr, dryRun)
 
-  let indices = JSON.parse(fs.readFileSync('indices.json', 'utf-8'));
+  let indices = JSON.parse(fs.readFileSync(INDICES_FILE, 'utf-8'));
   console.log(indices)
 
   fs.mkdirSync(INDICES_DIR, { recursive: true })
