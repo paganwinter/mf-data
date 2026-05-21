@@ -91,7 +91,7 @@ async function updateIndices(fromDateStr, toDateStr, dryRun = false) {
 
     let tris = {}
     await Promise.all(yearRange.map(async (year, j) => {
-      await new Promise(resolve => setTimeout(resolve, j * 10))
+      await new Promise(resolve => setTimeout(resolve, j * 100))
 
       const body = {
         "cinfo": `{'name':'${index.name.toUpperCase()}','startDate':'${isoDateToAMFI(`${year}-01-01`)}','endDate':'${isoDateToAMFI(`${year}-12-31`)}','indexName':'${index.name.toUpperCase()}'}`
