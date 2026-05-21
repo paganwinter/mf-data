@@ -40,7 +40,7 @@ jobs:
       - name: Update Indices
         continue-on-error: true
         run: |
-          node scripts/update-indices.js
+          node scripts/update-indices.js update-indices --from-date= --to-date= --dry-run=false
 
       - name: Push changes
         run: |
