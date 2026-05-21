@@ -2,18 +2,19 @@
 
 Downloads, parses, and stores NAV daily from [AMFI](https://www.amfiindia.com/net-asset-value/nav-download).
 
-### Funds List
+### Available Data
 
-- All Funds - https://paganwinter.github.io/mf-data/data/funds-all.json
-- Open ended Growth Funds - https://paganwinter.github.io/mf-data/data/funds-filtered.json
+#### Mutual Funds
+- Funds list (All) - https://paganwinter.github.io/mf-data/data/funds-all.json
+- Funds list (Open-ended, Growth) - https://paganwinter.github.io/mf-data/data/funds-filtered.json
+- Fund NAV History - https://paganwinter.github.io/mf-data/data/navs/{AMFI-code}.json
 
-### Fund NAVs
+#### Indices
+- List of Indices (TRI) - https://paganwinter.github.io/mf-data/data/indices.json
+- Indices History (TRI) - https://paganwinter.github.io/mf-data/data/indices/{index-id}.json
 
-- https://paganwinter.github.io/mf-data/data/navs/{AMFI-code}.json
 
----
-
-## TODO
+## References
 
 ### Index Info
 
@@ -24,6 +25,10 @@ Downloads, parses, and stores NAV daily from [AMFI](https://www.amfiindia.com/ne
     - https://www.nseindia.com/api/historicalOR/indicesHistory?indexType=NIFTY%2050&from=01-06-2025&to=15-05-2026
 - https://www.nseindia.com/all-reports
 - https://www.nseindia.com/reports-indices-historical-vix
+
+
+
+## TODO
 
 ### Fund Info
 
@@ -42,3 +47,4 @@ Downloads, parses, and stores NAV daily from [AMFI](https://www.amfiindia.com/ne
 
 /index/{index}.json
 ```
+
