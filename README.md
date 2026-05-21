@@ -49,13 +49,14 @@ Daat for Indian Mutual Funds.
   - https://groww.in/v1/api/data/mf/web/v1/scheme/portfolio/118834/stats
 
 
-### Propsed Structure
+### Proposed Structure
 
 ```
 /funds/funds-all.json
 /funds/funds-filtered.json
-/funds/nav/{fund-id}.json
+/funds/navs/{fund-id}.json
 
-/index/{index}.json
+/indices/indices.json
+/indices/history/{index-id}.json
 ```
 
