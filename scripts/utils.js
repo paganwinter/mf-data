@@ -1,8 +1,8 @@
 const { parseArgs } = require('node:util');
 
 const MONTHS_MAP = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-function amfiDateToISO(dateStr) {
-  const [dd, mmm, yyyy] = dateStr.split('-')
+function amfiDateToISO(dateStr, sep = '-') {
+  const [dd, mmm, yyyy] = dateStr.split(sep)
   return `${yyyy}-${`${(MONTHS_MAP.indexOf(mmm) + 1)}`.padStart(2, '0')}-${dd}`
 }
 
@@ -172,6 +172,7 @@ function filterFund(fund) {
 module.exports = {
   parseArguments,
   isoDateToAMFI,
+  amfiDateToISO,
   getMonthRanges,
   parseAMFIData,
   filterFund,
