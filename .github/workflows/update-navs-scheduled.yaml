@@ -37,6 +37,11 @@ jobs:
         run: |
           node scripts/update-navs.js stats
 
+      - name: Update Indices
+        continue-on-error: true
+        run: |
+          node scripts/update-indices.js
+
       - name: Push changes
         run: |
           git config user.name "github-actions[bot]"

@@ -1,0 +1,632 @@
+[
+  {
+    "name": "NIFTY 100",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_100"
+  },
+  {
+    "name": "NIFTY 200",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_200"
+  },
+  {
+    "name": "NIFTY 50",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_50"
+  },
+  {
+    "name": "NIFTY 500",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_500"
+  },
+  {
+    "name": "NIFTY INDIA FPI 150",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_INDIA_FPI_150"
+  },
+  {
+    "name": "NIFTY LARGEMIDCAP 250",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_LARGEMIDCAP_250"
+  },
+  {
+    "name": "NIFTY MICROCAP 250",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_MICROCAP_250"
+  },
+  {
+    "name": "NIFTY MIDCAP 100",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_MIDCAP_100"
+  },
+  {
+    "name": "NIFTY MIDCAP 150",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_MIDCAP_150"
+  },
+  {
+    "name": "NIFTY MIDCAP 50",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_MIDCAP_50"
+  },
+  {
+    "name": "NIFTY MIDCAP SELECT",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_MIDCAP_SELECT"
+  },
+  {
+    "name": "NIFTY MIDSMALLCAP 400",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_MIDSMALLCAP_400"
+  },
+  {
+    "name": "NIFTY MIDSMALLCAP400 50:50",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_MIDSMALLCAP400_50_50"
+  },
+  {
+    "name": "NIFTY NEXT 50",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_NEXT_50"
+  },
+  {
+    "name": "NIFTY SMALLCAP 100",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_SMALLCAP_100"
+  },
+  {
+    "name": "NIFTY SMALLCAP 250",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_SMALLCAP_250"
+  },
+  {
+    "name": "NIFTY SMALLCAP 50",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_SMALLCAP_50"
+  },
+  {
+    "name": "NIFTY SMALLCAP 500",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_SMALLCAP_500"
+  },
+  {
+    "name": "NIFTY TOTAL MARKET",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY_TOTAL_MARKET"
+  },
+  {
+    "name": "NIFTY500 LARGEMIDSMALL EQUAL-CAP WEIGHTED",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY500_LARGEMIDSMALL_EQUAL_CAP_WEIGHTED"
+  },
+  {
+    "name": "NIFTY500 MULTICAP 50:25:25",
+    "subType": "Broad Market Indices",
+    "id": "NIFTY500_MULTICAP_50_25_25"
+  },
+  {
+    "name": "NIFTY CAPITAL MARKETS",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_CAPITAL_MARKETS"
+  },
+  {
+    "name": "NIFTY COMMODITIES",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_COMMODITIES"
+  },
+  {
+    "name": "NIFTY CONGLOMERATE 50",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_CONGLOMERATE_50"
+  },
+  {
+    "name": "NIFTY CORE HOUSING",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_CORE_HOUSING"
+  },
+  {
+    "name": "NIFTY CPSE",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_CPSE"
+  },
+  {
+    "name": "NIFTY ENERGY",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_ENERGY"
+  },
+  {
+    "name": "NIFTY EV & NEW AGE AUTOMOTIVE",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_EV_NEW_AGE_AUTOMOTIVE"
+  },
+  {
+    "name": "NIFTY HOUSING",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_HOUSING"
+  },
+  {
+    "name": "NIFTY INDIA CONSUMPTION",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_CONSUMPTION"
+  },
+  {
+    "name": "NIFTY INDIA CORPORATE GROUP INDEX - ADITYA BIRLA GROUP",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_CORPORATE_GROUP_INDEX_ADITYA_BIRLA_GROUP"
+  },
+  {
+    "name": "NIFTY INDIA CORPORATE GROUP INDEX - MAHINDRA GROUP",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_CORPORATE_GROUP_INDEX_MAHINDRA_GROUP"
+  },
+  {
+    "name": "NIFTY INDIA CORPORATE GROUP INDEX - TATA GROUP",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_CORPORATE_GROUP_INDEX_TATA_GROUP"
+  },
+  {
+    "name": "NIFTY INDIA CORPORATE GROUP INDEX - TATA GROUP 25% CAP",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_CORPORATE_GROUP_INDEX_TATA_GROUP_25_CAP"
+  },
+  {
+    "name": "NIFTY INDIA DEFENCE",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_DEFENCE"
+  },
+  {
+    "name": "NIFTY INDIA DIGITAL",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_DIGITAL"
+  },
+  {
+    "name": "NIFTY INDIA INFRASTRUCTURE & LOGISTICS",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_INFRASTRUCTURE_LOGISTICS"
+  },
+  {
+    "name": "NIFTY INDIA INTERNET",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_INTERNET"
+  },
+  {
+    "name": "NIFTY INDIA MANUFACTURING",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_MANUFACTURING"
+  },
+  {
+    "name": "NIFTY INDIA NEW AGE CONSUMPTION",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_NEW_AGE_CONSUMPTION"
+  },
+  {
+    "name": "NIFTY INDIA RAILWAYS PSU",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_RAILWAYS_PSU"
+  },
+  {
+    "name": "NIFTY INDIA SELECT 5 CORPORATE GROUPS (MAATR)",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_SELECT_5_CORPORATE_GROUPS_MAATR_"
+  },
+  {
+    "name": "NIFTY INDIA TOURISM",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INDIA_TOURISM"
+  },
+  {
+    "name": "NIFTY INFRASTRUCTURE",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_INFRASTRUCTURE"
+  },
+  {
+    "name": "NIFTY IPO",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_IPO"
+  },
+  {
+    "name": "NIFTY MIDCAP LIQUID 15",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_MIDCAP_LIQUID_15"
+  },
+  {
+    "name": "NIFTY MIDSMALL INDIA CONSUMPTION",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_MIDSMALL_INDIA_CONSUMPTION"
+  },
+  {
+    "name": "NIFTY MNC",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_MNC"
+  },
+  {
+    "name": "NIFTY MOBILITY",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_MOBILITY"
+  },
+  {
+    "name": "NIFTY NON-CYCLICAL CONSUMER",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_NON_CYCLICAL_CONSUMER"
+  },
+  {
+    "name": "NIFTY PSE",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_PSE"
+  },
+  {
+    "name": "NIFTY REITS & INVITS",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_REITS_INVITS"
+  },
+  {
+    "name": "NIFTY RURAL",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_RURAL"
+  },
+  {
+    "name": "NIFTY SERVICES SECTOR",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_SERVICES_SECTOR"
+  },
+  {
+    "name": "NIFTY SHARIAH 25",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_SHARIAH_25"
+  },
+  {
+    "name": "NIFTY SME EMERGE",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_SME_EMERGE"
+  },
+  {
+    "name": "NIFTY TRANSPORTATION & LOGISTICS",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_TRANSPORTATION_LOGISTICS"
+  },
+  {
+    "name": "NIFTY WAVES",
+    "subType": "Thematic Indices",
+    "id": "NIFTY_WAVES"
+  },
+  {
+    "name": "NIFTY100 ENHANCED ESG",
+    "subType": "Thematic Indices",
+    "id": "NIFTY100_ENHANCED_ESG"
+  },
+  {
+    "name": "NIFTY100 ESG",
+    "subType": "Thematic Indices",
+    "id": "NIFTY100_ESG"
+  },
+  {
+    "name": "NIFTY100 ESG SECTOR LEADERS",
+    "subType": "Thematic Indices",
+    "id": "NIFTY100_ESG_SECTOR_LEADERS"
+  },
+  {
+    "name": "NIFTY100 LIQUID 15",
+    "subType": "Thematic Indices",
+    "id": "NIFTY100_LIQUID_15"
+  },
+  {
+    "name": "NIFTY50 SHARIAH",
+    "subType": "Thematic Indices",
+    "id": "NIFTY50_SHARIAH"
+  },
+  {
+    "name": "NIFTY500 MULTICAP INDIA MANUFACTURING 50:30:20",
+    "subType": "Thematic Indices",
+    "id": "NIFTY500_MULTICAP_INDIA_MANUFACTURING_50_30_20"
+  },
+  {
+    "name": "NIFTY500 MULTICAP INFRASTRUCTURE 50:30:20",
+    "subType": "Thematic Indices",
+    "id": "NIFTY500_MULTICAP_INFRASTRUCTURE_50_30_20"
+  },
+  {
+    "name": "NIFTY500 SHARIAH",
+    "subType": "Thematic Indices",
+    "id": "NIFTY500_SHARIAH"
+  },
+  {
+    "name": "NIFTY 50 FUTURES TR",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_50_FUTURES_TR"
+  },
+  {
+    "name": "NIFTY ALPHA 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_ALPHA_50"
+  },
+  {
+    "name": "NIFTY ALPHA LOW-VOLATILITY 30",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_ALPHA_LOW_VOLATILITY_30"
+  },
+  {
+    "name": "NIFTY ALPHA QUALITY LOW-VOLATILITY 30",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_ALPHA_QUALITY_LOW_VOLATILITY_30"
+  },
+  {
+    "name": "NIFTY ALPHA QUALITY VALUE LOW-VOLATILITY 30",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_ALPHA_QUALITY_VALUE_LOW_VOLATILITY_30"
+  },
+  {
+    "name": "NIFTY DIVIDEND OPPORTUNITIES 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_DIVIDEND_OPPORTUNITIES_50"
+  },
+  {
+    "name": "NIFTY GROWTH SECTORS 15",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_GROWTH_SECTORS_15"
+  },
+  {
+    "name": "NIFTY HIGH BETA 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_HIGH_BETA_50"
+  },
+  {
+    "name": "NIFTY LOW VOLATILITY 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_LOW_VOLATILITY_50"
+  },
+  {
+    "name": "NIFTY MIDCAP150 MOMENTUM 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_MIDCAP150_MOMENTUM_50"
+  },
+  {
+    "name": "NIFTY MIDCAP150 QUALITY 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_MIDCAP150_QUALITY_50"
+  },
+  {
+    "name": "NIFTY MIDSMALLCAP400 MOMENTUM QUALITY 100",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_MIDSMALLCAP400_MOMENTUM_QUALITY_100"
+  },
+  {
+    "name": "NIFTY QUALITY LOW-VOLATILITY 30",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_QUALITY_LOW_VOLATILITY_30"
+  },
+  {
+    "name": "NIFTY SMALLCAP250 MOMENTUM QUALITY 100",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_SMALLCAP250_MOMENTUM_QUALITY_100"
+  },
+  {
+    "name": "NIFTY SMALLCAP250 QUALITY 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_SMALLCAP250_QUALITY_50"
+  },
+  {
+    "name": "NIFTY TOP 10 EQUAL WEIGHT",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_TOP_10_EQUAL_WEIGHT"
+  },
+  {
+    "name": "NIFTY TOP 15 EQUAL WEIGHT",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_TOP_15_EQUAL_WEIGHT"
+  },
+  {
+    "name": "NIFTY TOP 20 EQUAL WEIGHT",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_TOP_20_EQUAL_WEIGHT"
+  },
+  {
+    "name": "NIFTY TOTAL MARKET MOMENTUM QUALITY 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY_TOTAL_MARKET_MOMENTUM_QUALITY_50"
+  },
+  {
+    "name": "NIFTY100 ALPHA 30",
+    "subType": "Strategy Indices",
+    "id": "NIFTY100_ALPHA_30"
+  },
+  {
+    "name": "NIFTY100 EQUAL WEIGHT",
+    "subType": "Strategy Indices",
+    "id": "NIFTY100_EQUAL_WEIGHT"
+  },
+  {
+    "name": "NIFTY100 LOW VOLATILITY 30",
+    "subType": "Strategy Indices",
+    "id": "NIFTY100_LOW_VOLATILITY_30"
+  },
+  {
+    "name": "NIFTY100 QUALITY 30",
+    "subType": "Strategy Indices",
+    "id": "NIFTY100_QUALITY_30"
+  },
+  {
+    "name": "NIFTY200 ALPHA 30",
+    "subType": "Strategy Indices",
+    "id": "NIFTY200_ALPHA_30"
+  },
+  {
+    "name": "NIFTY200 MOMENTUM 30",
+    "subType": "Strategy Indices",
+    "id": "NIFTY200_MOMENTUM_30"
+  },
+  {
+    "name": "NIFTY200 QUALITY 30",
+    "subType": "Strategy Indices",
+    "id": "NIFTY200_QUALITY_30"
+  },
+  {
+    "name": "NIFTY200 VALUE 30",
+    "subType": "Strategy Indices",
+    "id": "NIFTY200_VALUE_30"
+  },
+  {
+    "name": "NIFTY50 EQUAL WEIGHT",
+    "subType": "Strategy Indices",
+    "id": "NIFTY50_EQUAL_WEIGHT"
+  },
+  {
+    "name": "NIFTY50 VALUE 20",
+    "subType": "Strategy Indices",
+    "id": "NIFTY50_VALUE_20"
+  },
+  {
+    "name": "NIFTY500 EQUAL WEIGHT",
+    "subType": "Strategy Indices",
+    "id": "NIFTY500_EQUAL_WEIGHT"
+  },
+  {
+    "name": "NIFTY500 FLEXICAP QUALITY 30",
+    "subType": "Strategy Indices",
+    "id": "NIFTY500_FLEXICAP_QUALITY_30"
+  },
+  {
+    "name": "NIFTY500 LOW VOLATILITY 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY500_LOW_VOLATILITY_50"
+  },
+  {
+    "name": "NIFTY500 MOMENTUM 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY500_MOMENTUM_50"
+  },
+  {
+    "name": "NIFTY500 MULTICAP MOMENTUM QUALITY 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY500_MULTICAP_MOMENTUM_QUALITY_50"
+  },
+  {
+    "name": "NIFTY500 MULTIFACTOR MQVLV 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY500_MULTIFACTOR_MQVLV_50"
+  },
+  {
+    "name": "NIFTY500 QUALITY 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY500_QUALITY_50"
+  },
+  {
+    "name": "NIFTY500 VALUE 50",
+    "subType": "Strategy Indices",
+    "id": "NIFTY500_VALUE_50"
+  },
+  {
+    "name": "NIFTY AUTO",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_AUTO"
+  },
+  {
+    "name": "NIFTY BANK",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_BANK"
+  },
+  {
+    "name": "NIFTY CEMENT",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_CEMENT"
+  },
+  {
+    "name": "NIFTY CHEMICALS",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_CHEMICALS"
+  },
+  {
+    "name": "NIFTY CONSUMER DURABLES",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_CONSUMER_DURABLES"
+  },
+  {
+    "name": "NIFTY FINANCIAL SERVICES",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_FINANCIAL_SERVICES"
+  },
+  {
+    "name": "NIFTY FINANCIAL SERVICES 25/50",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_FINANCIAL_SERVICES_25_50"
+  },
+  {
+    "name": "NIFTY FINANCIAL SERVICES EX-BANK",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_FINANCIAL_SERVICES_EX_BANK"
+  },
+  {
+    "name": "NIFTY FMCG",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_FMCG"
+  },
+  {
+    "name": "NIFTY HEALTHCARE",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_HEALTHCARE"
+  },
+  {
+    "name": "NIFTY IT",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_IT"
+  },
+  {
+    "name": "NIFTY MEDIA",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_MEDIA"
+  },
+  {
+    "name": "NIFTY METAL",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_METAL"
+  },
+  {
+    "name": "NIFTY MIDSMALL FINANCIAL SERVICES",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_MIDSMALL_FINANCIAL_SERVICES"
+  },
+  {
+    "name": "NIFTY MIDSMALL HEALTHCARE",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_MIDSMALL_HEALTHCARE"
+  },
+  {
+    "name": "NIFTY MIDSMALL IT & TELECOM",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_MIDSMALL_IT_TELECOM"
+  },
+  {
+    "name": "NIFTY OIL & GAS",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_OIL_GAS"
+  },
+  {
+    "name": "NIFTY PHARMA",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_PHARMA"
+  },
+  {
+    "name": "NIFTY PRIVATE BANK",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_PRIVATE_BANK"
+  },
+  {
+    "name": "NIFTY PSU BANK",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_PSU_BANK"
+  },
+  {
+    "name": "NIFTY REALTY",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_REALTY"
+  },
+  {
+    "name": "NIFTY REITS & REALTY",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY_REITS_REALTY"
+  },
+  {
+    "name": "NIFTY500 HEALTHCARE",
+    "subType": "Sectoral Indices",
+    "id": "NIFTY500_HEALTHCARE"
+  }
+]

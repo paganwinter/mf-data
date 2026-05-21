@@ -20,50 +20,50 @@ function normaliseIndexName(name) {
   return name.replace(/[^a-zA-Z0-9]+/g, '_').trim().toUpperCase()
 }
 
+async function updateIndicesList() {
+  let indices = []
+  // const subTypes = [
+  //   'Broad Market Indices',
+  //   'Sectoral Indices',
+  //   'Strategy Indices',
+  //   'Thematic Indices',
+  // ]
+  const subTypesRes = await fetch(`${NIFTY_INDICES_URL}/gethistoricaltypeSubindexdata`, {
+    dispatcher,
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ cinfo: { indextype: 'Equity', indexgroup: ' Total returns Index Values ' } }),
+  }).then(r => r.json())
+  const subTypes = subTypesRes.d.map(i => i.indextype);
+  console.log(subTypes)
+
+  await Promise.all(subTypes.map(async (subType) => {
+    console.log('Getting indices for sub type:', subType)
+    const body = JSON.stringify({ cinfo: { indextype: subType, indexgroup: ' Total returns Index Values ' } })
+    const subIndexTypeIndicesRes = await fetch(`${NIFTY_INDICES_URL}/gethistoricaltypeindexdata`, {
+      dispatcher,
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body,
+    }).then(r => r.json());
+    const subIndexTypeIndices = subIndexTypeIndicesRes.d.map(i => i.indextype);
+    console.log(subType, subIndexTypeIndices)
+    subIndexTypeIndices.forEach(indName => {
+      indices.push({
+        name: indName,
+        subType,
+        id: normaliseIndexName(indName)
+      })
+    })
+  }))
+  console.log(indices)
+  fs.writeFileSync('data/indices.json', JSON.stringify(indices, null, 2));
+}
+
 async function updateIndices(fromDateStr, toDateStr, dryRun = false) {
   console.log(fromDateStr, toDateStr, dryRun)
 
-  let indices = []
-
-  // // const subTypes = [
-  // //   'Broad Market Indices',
-  // //   'Sectoral Indices',
-  // //   'Strategy Indices',
-  // //   'Thematic Indices',
-  // // ]
-  // const subTypesRes = await fetch(`${NIFTY_INDICES_URL}/gethistoricaltypeSubindexdata`, {
-  //   dispatcher,
-  //   method: 'POST',
-  //   headers: { 'content-type': 'application/json' },
-  //   body: JSON.stringify({ cinfo: { indextype: 'Equity', indexgroup: ' Total returns Index Values ' } }),
-  // }).then(r => r.json())
-  // const subTypes = subTypesRes.d.map(i => i.indextype);
-  // console.log(subTypes)
-
-  // await Promise.all(subTypes.map(async (subType) => {
-  //   console.log('Getting indices for sub type:', subType)
-  //   const body = JSON.stringify({ cinfo: { indextype: subType, indexgroup: ' Total returns Index Values ' } })
-  //   const subIndexTypeIndicesRes = await fetch(`${NIFTY_INDICES_URL}/gethistoricaltypeindexdata`, {
-  //     dispatcher,
-  //     method: 'POST',
-  //     headers: { 'content-type': 'application/json' },
-  //     body,
-  //   }).then(r => r.json());
-  //   const subIndexTypeIndices = subIndexTypeIndicesRes.d.map(i => i.indextype);
-  //   console.log(subType, subIndexTypeIndices)
-  //   subIndexTypeIndices.forEach(indName => {
-  //     indices.push({
-  //       name: indName,
-  //       subType,
-  //       id: normaliseIndexName(indName)
-  //     })
-  //   })
-  // }))
-  // console.log(indices)
-  // fs.writeFileSync('indices.json', JSON.stringify(indices, null, 2));
-  // return
-
-  indices = JSON.parse(fs.readFileSync('indices.json', 'utf-8'));
+  let indices = JSON.parse(fs.readFileSync('indices.json', 'utf-8'));
   console.log(indices)
 
   fs.mkdirSync(INDICES_DIR, { recursive: true })
@@ -182,17 +182,21 @@ async function main() {
   console.log({command, fromDate, toDate, dryRun})
   console.log('')
 
-  await updateIndices(fromDate, toDate, dryRun)
-  // switch(command) {
-  //   case 'update-indices': {
-  //     await updateIndices(fromDate, toDate, dryRun)
-  //     break;
-  //   }
-  //   default: {
-  //     console.log(`Invalid command ${command}. Use one of: update-indices`)
-  //     process.exit(1)
-  //   }
-  // }
+  // await updateIndices(fromDate, toDate, dryRun)
+  switch(command) {
+    case 'update-indices': {
+      await updateIndices(fromDate, toDate, dryRun)
+      break;
+    }
+    case 'update-indices-list': {
+      await updateIndicesList()
+      break;
+    }
+    default: {
+      console.log(`Invalid command ${command}. Use one of: update-indices`)
+      process.exit(1)
+    }
+  }
 }
 
 

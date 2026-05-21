@@ -78,6 +78,7 @@ jobs:
 
       - name: Update Indices
         if: ${{ github.event.inputs.steps_update_indices == 'true' }}
+        continue-on-error: true
         run: |
           node scripts/update-indices.js --from-date=${{ github.event.inputs.from_date }} --to-date=${{ github.event.inputs.to_date }} --dry-run=${{ github.event.inputs.dry_run }}
 
