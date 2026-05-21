@@ -114,7 +114,7 @@ async function updateIndices(fromDateStr, toDateStr, dryRun = false) {
           };
           return acc;
         }, {})
-        console.log(index.name, 'year:', year, Object.keys(yearlyTris).length);
+        console.log('  ', index.name, 'fetched for year:', year, Object.keys(yearlyTris).length);
         tris = { ...tris, ...yearlyTris };
       } catch (err) {
         console.log(err);
