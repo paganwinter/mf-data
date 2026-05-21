@@ -67,7 +67,7 @@ async function updateIndices(fromDateStr, toDateStr, dryRun = false) {
   console.log(fromDateStr, toDateStr, dryRun)
 
   let indices = JSON.parse(fs.readFileSync(INDICES_FILE, 'utf-8'));
-  console.log(indices)
+  // console.log(indices)
 
   fs.mkdirSync(INDICES_DIR, { recursive: true })
 
