@@ -143,6 +143,7 @@ async function updateIndices(fromDateStr, toDateStr, dryRun = false) {
       // fs.writeFileSync(indexFile, JSON.stringify(indexData, null, 2))
       fs.writeFileSync(indexFile, JSON.stringify(indexData))
       console.log(indexCount++, '/', indicesToUpdate.length, index.name, 'Updated')
+      console.log('-----')
       console.log('')
     }
   }
