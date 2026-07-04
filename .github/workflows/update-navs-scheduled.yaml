@@ -27,11 +27,11 @@ jobs:
 
       - name: Download and Parse NAVs
         run: |
-          node scripts/update-navs.js download-parse --from-date= --to-date= --dry-run=false
+          node scripts/update-navs.js download-parse --scheduled=true --from-date= --to-date= --dry-run=false
 
       - name: Process NAVs
         run: |
-          node scripts/update-navs.js process-navs --from-date= --to-date= --dry-run=false
+          node scripts/update-navs.js process-navs --scheduled=true --from-date= --to-date= --dry-run=false
 
       - name: Update Stats
         run: |
@@ -40,7 +40,7 @@ jobs:
       - name: Update Indices
         continue-on-error: true
         run: |
-          node scripts/update-indices.js update-indices --from-date= --to-date= --dry-run=false
+          node scripts/update-indices.js update-indices --scheduled=true --from-date= --to-date= --dry-run=false
 
       - name: Push changes
         run: |

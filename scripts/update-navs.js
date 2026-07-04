@@ -2,7 +2,7 @@ const fs = require('fs');
 const { execSync, exec } = require('child_process')
 
 const utils = require('./utils');
-const { parseArguments, isoDateToAMFI, getMonthRanges, parseAMFIData, filterFund } = utils;
+const { parseArguments, isoDateToAMFI, getMonthRanges, parseAMFIData, filterFund, writeToSummary } = utils;
 
 
 const AMFI_RAW_DATA_DIR = './amfi-data-raw'
@@ -43,6 +43,8 @@ async function downloadAndParse(fromDateStr, toDateStr, dryRun = false) {
     if (!parsedData?.funds?.length) {
       console.log(parsedData)
       console.log('  !! Failed to parse file', rawFileName)
+      writeToSummary(`Failed to parse file': ${rawFileName}\n`);
+
       // throw new Error('Failed to parse file')
       return
     }
@@ -52,6 +54,7 @@ async function downloadAndParse(fromDateStr, toDateStr, dryRun = false) {
         fundsCount: parsedData.funds.length,
         funds: parsedData.funds,
       }))
+      writeToSummary(`- Downloaded and parsed navs for ${monthStr}, saved to ${parsedFileName} (${parsedData.funds.length} funds)\n`);
     }
     // #endregion PARSE
 
@@ -122,6 +125,7 @@ function processNAVs(fromDateStr, toDateStr, dryRun = false) {
       })
       console.timeEnd(`- Processed month in`)
       console.log('')
+      writeToSummary(`- Processed data for month ${monthStr}\n`);
     }
     // console.log('Funds: ', Object.keys(fundsMap).length)
     // console.timeEnd('Processed NAV files in')
@@ -162,6 +166,7 @@ function processNAVs(fromDateStr, toDateStr, dryRun = false) {
     console.log('')
     console.timeEnd(`- Year ${year} processed in`)
     console.log('\n==========\n')
+    writeToSummary(`- Updated NAVs for year ${year}\n`);
   }
   console.timeEnd('Total Time')
 }
@@ -240,6 +245,7 @@ function updateStats() {
   filteredFundsCsv += filteredFunds.map(fund => { return Object.values(fund).map(i => `"${i}"`).join(',') }).join('\n')
   fs.writeFileSync('./data/funds-filtered.csv', filteredFundsCsv)
   console.timeEnd('Updated funds list in')
+  writeToSummary(`- Updated funds list\n`);
 }
 
 
@@ -258,7 +264,7 @@ async function main() {
   // node scripts/update-navs.js parse --from-date=2024-01-01 --to-date=2024-12-31
   // node scripts/update-navs.js process --from-date=2024-01-01 --to-date=2024-12-31
 
-  let { command, options: { fromDate, toDate, dryRun } } = parseArguments()
+  let { command, options: { fromDate, toDate, scheduled, dryRun } } = parseArguments()
 
   // if start and end not specified, use start and end of current month
   if (!fromDate) {
@@ -271,10 +277,24 @@ async function main() {
     const lastDay = new Date(toDate.getFullYear(), toDate.getMonth() + 1, 0).getDate();
     toDate = toDate.toISOString().split('-').slice(0, 2).join('-') + '-' + `${lastDay}`.padStart(2, '0')
   }
+
+  if (scheduled) {
+    // get data from first of previous month to end of current month
+    // to backfill any missing entries for previous month
+    // (eg. failure or late run on last day of month)
+    const currentDate = new Date()
+    const previousMonthStart = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+    fromDate = `${previousMonthStart.getFullYear()}-${String(previousMonthStart.getMonth() + 1).padStart(2, '0')}-${String(previousMonthStart.getDate()).padStart(2, '0')}`
+
+    toDate = currentDate
+    const lastDay = new Date(toDate.getFullYear(), toDate.getMonth() + 1, 0).getDate();
+    toDate = `${toDate.getFullYear()}-${String(toDate.getMonth() + 1).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`
+  }
+
   if (new Date(fromDate) > new Date(toDate)) throw new Error(`'from' date (${fromDate}) must be before 'to' date (${toDate})`);
   dryRun = dryRun === true || dryRun === 'true'
 
-  console.log({command, fromDate, toDate, dryRun})
+  console.log({command, fromDate, toDate, scheduled, dryRun})
   console.log('')
 
 

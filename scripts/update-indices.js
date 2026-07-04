@@ -3,7 +3,7 @@ const { execSync, exec } = require('child_process');
 
 const utils = require('./utils');
 // const { getMonthRanges, filterFund } = utils;
-const { parseArguments, isoDateToAMFI, amfiDateToISO } = utils;
+const { parseArguments, isoDateToAMFI, amfiDateToISO, writeToSummary } = utils;
 
 
 let dispatcher = undefined
@@ -118,9 +118,10 @@ async function updateIndices(fromDateStr, toDateStr, dryRun = false) {
         tris = { ...tris, ...yearlyTris };
       } catch (err) {
         console.log(err);
-        console.log(triRes);
+        // console.log(triRes);
         console.log('Error parsing data for', index.name, year)
         console.log('-----')
+        writeToSummary(`- Error parsing data for ${index.name} (${year})\n`);
       }
     }))
 

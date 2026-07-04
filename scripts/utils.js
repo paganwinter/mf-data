@@ -26,6 +26,17 @@ function parseArguments(args = process.argv.slice(2)) {
   };
 }
 
+function writeToSummary(mdText) {
+  const summaryPath = process.env.GITHUB_STEP_SUMMARY;
+  try {
+    if (summaryPath) {
+      fs.appendFileSync(summaryPath, mdText);
+    }
+  } catch (err) {
+    // error writing to jobs summary
+  }
+}
+
 
 function getMonthRanges(startDate, endDate) {
   const start = new Date(startDate);
@@ -175,5 +186,6 @@ module.exports = {
   amfiDateToISO,
   getMonthRanges,
   parseAMFIData,
+  writeToSummary,
   filterFund,
 }
