@@ -13,7 +13,8 @@ if (process.env.USE_PROXY === 'true') {
   dispatcher = new undici.ProxyAgent('http://localhost:3128')
 }
 
-const NIFTY_INDICES_URL = 'https://www.niftyindices.com/Backpage.aspx';
+// const NIFTY_INDICES_URL = 'https://www.niftyindices.com/Backpage.aspx';
+const NIFTY_INDICES_URL = 'https://www.niftyindices.com/Backpage';
 const INDICES_DIR = 'data/indices';
 const INDICES_FILE = 'data/indices.json';
 
@@ -108,8 +109,9 @@ async function updateIndices(fromDateStr, toDateStr, dryRun = false) {
       triRes = await triRes.text();
 
       try {
-        triRes = JSON.parse(triRes);
-        const yearlyTris = JSON.parse(triRes.d).reduce((acc, item) => {
+        // const dataArray = JSON.parse(JSON.parse(triRes).d);
+        const dataArray = JSON.parse(triRes);
+        const yearlyTris = dataArray.reduce((acc, item) => {
           acc[amfiDateToISO(item.Date, ' ')] = {
             tri: +item.TotalReturnsIndex,
             ntrValue: item.NTR_Value === '-' ? undefined : +item.NTR_Value,
