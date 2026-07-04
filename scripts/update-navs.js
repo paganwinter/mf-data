@@ -27,6 +27,8 @@ async function downloadAndParse(fromDateStr, toDateStr, dryRun = false) {
     const parsedFileName = `nav_history_${monthStr}.json`
     console.log(i + 1, '/', monthRanges.length, `Month: ${monthStr} [${monthStart} - ${monthEnd}]`)
 
+    writeToSummary(`- Downloading navs [${monthStart} - ${monthEnd}]\n`);
+
     // #region DOWNLOAD
     // all (open ended and close ended)
     // const url = `https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=${isoDateToAMFI(monthStart)}&todt=${isoDateToAMFI(monthEnd)}`
@@ -44,7 +46,7 @@ async function downloadAndParse(fromDateStr, toDateStr, dryRun = false) {
     if (!parsedData?.funds?.length) {
       console.log(parsedData)
       console.log('  !! Failed to parse file', rawFileName)
-      writeToSummary(`Failed to parse file': ${rawFileName}\n`);
+      writeToSummary(`- Failed to parse file': ${rawFileName}\n`);
 
       // throw new Error('Failed to parse file')
       return
@@ -55,7 +57,7 @@ async function downloadAndParse(fromDateStr, toDateStr, dryRun = false) {
         fundsCount: parsedData.funds.length,
         funds: parsedData.funds,
       }))
-      writeToSummary(`- Downloaded and parsed navs for ${monthStr}, saved to ${parsedFileName} (${parsedData.funds.length} funds)\n`);
+      writeToSummary(`- Downloaded and parsed navs [${monthStart} - ${monthEnd}]saved to ${parsedFileName} (${parsedData.funds.length} funds)\n`);
     }
     // #endregion PARSE
 
@@ -88,6 +90,8 @@ function processNAVs(fromDateStr, toDateStr, dryRun = false) {
     console.log(`YEAR: ${year}`);
     console.log('- Processing monthly NAV files')
     console.log('')
+    writeToSummary(`- Processing monthly NAV files for year ${year}\n`);
+
     const monthRanges = years[year]
     const months = monthRanges.map(range => range[0].substring(5, 7))
     // console.log('  MONTHS:', months.join(', '));
@@ -98,6 +102,7 @@ function processNAVs(fromDateStr, toDateStr, dryRun = false) {
       const [monthStart, monthEnd] = monthRanges[i]
       const monthStr = monthStart.split('-').slice(0, 2).join('-')
       console.log(`${monthStr}`);
+      writeToSummary(`- Processing data for month ${monthStr}\n`);
 
       const parsedFileName = `nav_history_${monthStr}.json`
       console.log(`- File: ${parsedFileName}`)
@@ -127,7 +132,7 @@ function processNAVs(fromDateStr, toDateStr, dryRun = false) {
       })
       console.timeEnd(`- Processed month in`)
       console.log('')
-      writeToSummary(`- Processed data for month ${monthStr}\n`);
+      writeToSummary(`  - Done\n`);
     }
     // console.log('Funds: ', Object.keys(fundsMap).length)
     // console.timeEnd('Processed NAV files in')
@@ -135,6 +140,7 @@ function processNAVs(fromDateStr, toDateStr, dryRun = false) {
 
     console.log(`${year}: Updating NAV files`)
     console.log(`- Funds: ${Object.keys(fundsMap).length}`)
+    writeToSummary(`- Updating NAV files\n`);
     Object.entries(fundsMap).forEach(([schemeCode, fund], i) => {
       const fundFile = `${NAVS_DATA_DIR}/${schemeCode}.json`
 
@@ -168,7 +174,6 @@ function processNAVs(fromDateStr, toDateStr, dryRun = false) {
     console.log('')
     console.timeEnd(`- Year ${year} processed in`)
     console.log('\n==========\n')
-    writeToSummary(`- Updated NAVs for year ${year}\n`);
   }
   console.timeEnd('Total Time')
 }
