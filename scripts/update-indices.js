@@ -65,6 +65,7 @@ async function updateIndicesList() {
 
 async function updateIndices(fromDateStr, toDateStr, dryRun = false) {
   console.log(fromDateStr, toDateStr, dryRun)
+  writeToSummary(`## Updating Indices for ${fromDateStr} - ${toDateStr}\n`);
 
   let indices = JSON.parse(fs.readFileSync(INDICES_FILE, 'utf-8'));
   // console.log(indices)
@@ -97,6 +98,7 @@ async function updateIndices(fromDateStr, toDateStr, dryRun = false) {
         "cinfo": `{'name':'${index.name.toUpperCase()}','startDate':'${isoDateToAMFI(`${year}-01-01`)}','endDate':'${isoDateToAMFI(`${year}-12-31`)}','indexName':'${index.name.toUpperCase()}'}`
       }
       const url = `${NIFTY_INDICES_URL}/getTotalReturnIndexString`
+      console.log(index.name, year, url, body)
       let triRes = await fetch(url, {
         dispatcher,
         method: 'POST',

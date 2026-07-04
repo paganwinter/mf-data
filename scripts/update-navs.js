@@ -13,6 +13,7 @@ const NAVS_DATA_DIR = './data/navs'
 async function downloadAndParse(fromDateStr, toDateStr, dryRun = false) {
   console.log('')
   console.log('DOWNLOADING AND PARSING NAVS...')
+  writeToSummary(`## Downloading, parsing, and saving NAVs for ${fromDateStr} - ${toDateStr}\n`);
 
   const monthRanges = getMonthRanges(fromDateStr, toDateStr)
   console.log('monthRanges:', monthRanges)
@@ -76,6 +77,7 @@ function getNavStatsBasic(navsMap) {
 function processNAVs(fromDateStr, toDateStr, dryRun = false) {
   console.time('Total Time')
   fs.mkdirSync(NAVS_DATA_DIR, { recursive: true })
+  writeToSummary(`## Updating and saving NAVs for ${fromDateStr} - ${toDateStr}\n`);
 
   const ranges = getMonthRanges(fromDateStr, toDateStr)
   // console.log(ranges);
@@ -177,6 +179,7 @@ function updateStats() {
   console.log('Updating fund stats')
   const historyFiles = fs.readdirSync(AMFI_PARSED_DATA_DIR).filter(f => f.endsWith('.json'))
   console.log('NAV History files:', historyFiles.length)
+  writeToSummary(`## Updating funds list\n`);
 
   console.time('Loaded funds info in')
   let fundsMap = {}
