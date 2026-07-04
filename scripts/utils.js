@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { parseArgs } = require('node:util');
 
 const MONTHS_MAP = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
