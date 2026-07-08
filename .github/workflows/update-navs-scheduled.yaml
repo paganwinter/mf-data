@@ -5,6 +5,7 @@ run-name: Update NAVs - scheduled
 on:
   schedule:
     - cron: "0 18 * * 1-6" # Mon to Sat at 11:30 pm IST
+    - cron: "0 6 * * 1-6" # Mon to Sat at 11:30 am IST
 
 jobs:
   update-navs:
