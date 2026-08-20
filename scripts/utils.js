@@ -116,7 +116,8 @@ function parseAMFIData(data) {
       currentAMC = line
     } else if (FUND_LINE_REGEX.test(line)) {
       // Fund data
-      let [schemeCode, schemeName, isinGrowth, isinDivReinvestment, nav, repurchasePrice, salePrice, date] = line.split(';')
+      // let [schemeCode, schemeName, isinGrowth, isinDivReinvestment, nav, repurchasePrice, salePrice, date] = line.split(';')
+      let [schemeCode, schemeName, plan, option, isinGrowth, isinDivReinvestment, nav, date] = line.split(';')
 
       date = amfiDateToISO(date)
       nav = +nav
